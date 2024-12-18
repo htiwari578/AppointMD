@@ -6,7 +6,7 @@ import { assets } from '../assets/assets';
 const Appointment = () => {
 
   const {docId} = useParams();
-  const {doctors} = useContext(AppContext);
+  const {doctors, currencySymbol} = useContext(AppContext);
   const [docInfo , setDocInfo] = useState(null);
 
   const  fetchDocInfo = async () => {
@@ -41,6 +41,8 @@ const Appointment = () => {
               About <img src={assets.info_icon} alt ="" /></p>
             <p className="text-sm text-gray-500 max-w-[700px] mt-1">{docInfo.about}</p>
           </div>
+          <p className="text-gray-500 font-medium mt-4">
+            Appointment fee:<span className="text-gray-700">{currencySymbol}{docInfo.fees}</span> </p>
         </div>
       </div>
       
