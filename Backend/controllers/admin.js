@@ -72,7 +72,12 @@ export const loginAdmin = async (req,res) =>  {
     try {
         const {email,password} = req.body;
         if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
-            const token = jwt.sign(email+password,process.env.JWT_SECRET )
+            const token = jwt.sign(email+password,process.env.JWT_SECRET_KEY );
+            // const token = jwt.sign(
+            //     { email: email },
+            //     process.env.JWT_SECRET_KEY,
+            //     { expiresIn: '1h' } // Token will expire in 1 hour
+            // );
             res.json({success:true,token})
         }else{
             res.json({
