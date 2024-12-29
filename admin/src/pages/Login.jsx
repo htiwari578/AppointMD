@@ -21,9 +21,10 @@ const Login = () => {
                 if(data.success){
                     localStorage.setItem('atoken', data.token)
                     setAtoken(data.token)
-                }else{
+                }
+                else{
                     toast.error(data.message);
-            }
+                }
             
             }
         } catch (error) {
