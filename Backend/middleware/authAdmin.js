@@ -16,7 +16,7 @@ export const authAdmin = async (req,res,next)=> {
        
         if(!atoken){
             return res.json({
-                message:"Not authorized Login agin",
+                message:"Not authorized Login again",
                 success:false
             })
         }
