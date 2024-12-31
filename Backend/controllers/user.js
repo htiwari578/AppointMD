@@ -43,3 +43,32 @@ export const registerUser = async (req,res) => {
         })
     }
 }
+
+export const loginUser = async(req,res) => {
+    try {
+        const {email,password} = req.body
+        if(!email || !password){
+            res.json({message:"Something is missing",success:false})
+        }
+        const user = await userModel.findOne({email})
+        if(!user) {
+            res.json({
+                message:"User does not exist", success:false})
+        }
+        // check if user password matched or not
+        const isPasswordMatch = await bcrypt.compare(password, user.password)
+        if(isPasswordMatch){
+            const token = jwt.sign({id:user._id},process.env.JWT_SECRET_KEY)
+            res.json({success:true,token})
+        }else{
+            res.json({message:"Invalid credentials",success:false})
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.json({
+            message:"Server error",
+            success:false
+        })
+    }
+}
