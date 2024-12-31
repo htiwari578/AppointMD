@@ -52,7 +52,7 @@ export const loginUser = async(req,res) => {
         }
         const user = await userModel.findOne({email})
         if(!user) {
-            res.json({
+           return res.json({
                 message:"User does not exist", success:false})
         }
         // check if user password matched or not
