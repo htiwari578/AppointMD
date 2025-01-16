@@ -17,5 +17,5 @@ const appointSchema = new mongoose.Schema ({
     payment : {type:Boolean , default:false},
     isCompleted : {type:Boolean , default:false}
 })
-const appointmentModel = mongoose.model.appointement || mongoose.model('appointment', appointSchema)
-export default appointmentModel
+const appointmentModel = mongoose.models.appointement || mongoose.model('appointment', appointSchema)
+export default appointmentModel;
