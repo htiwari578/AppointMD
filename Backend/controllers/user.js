@@ -188,3 +188,25 @@ export const bookAppointment = async (req,res)=> {
         })
     }
 }
+
+
+//api to get user appointments for frontend my-appointments
+
+
+export const listAppointmnets = async (req,res) =>{
+    try {
+        const {userId} = req.body;
+        const appointments = await appointmentModel.find({userId})
+
+        res.json({
+            success:true,
+            appointments
+        })
+    } catch (error) {
+        console.log(error);
+        res.json({
+            message:"Server error",
+            success:false
+        })
+    }
+}
