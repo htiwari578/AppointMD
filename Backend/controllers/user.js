@@ -1,10 +1,15 @@
 import validator from 'validator'
+import dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
 import userModel from '../models/userModel.js';
 import {v2 as cloudinary} from "cloudinary"
 import doctorModel from '../models/doctorModel.js';
 import appointmentModel from '../models/appointmentModel.js';
+import razorpay from 'razorpay'
+
+dotenv.config();
+
 
 export const registerUser = async (req,res) => {
 
@@ -247,4 +252,42 @@ export const cancelAppointments = async (req,res)=> {
             success:false
         })
     }
+}
+
+//api for payment using razorpay
+
+ const razorpayInstance = new razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+export const paymentRazorpay = async (req,res)=>{
+
+    try {
+        const {appointmentId} = req.body
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+    
+        if(!appointmentData || appointmentData.cancelled){
+            return res.json({success:false,message:"Appointment cancelled or not found"})
+        }
+        //creating options for razorpay
+    
+        const options = {
+            amount: appointmentData.amount * 100,
+            currency: process.env.CURRENCY,
+            receipt : appointmentId,
+    
+        }
+        //create of an order
+        const order = await razorpayInstance.orders.create(options)
+        res.json({success:true,order})
+    } catch (error) {
+        console.log(error);
+        res.json({
+            message:"Server error",
+            success:false
+        })
+    }
+   
 }
