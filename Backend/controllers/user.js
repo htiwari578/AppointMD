@@ -234,12 +234,12 @@ export const cancelAppointments = async (req,res)=> {
 
         const doctorData = await doctorModel.findById(docId)
 
-        let slots_booked = doctorData.slots.booked ;
+        let slots_booked = doctorData.slots_booked ;
         slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
 
         await doctorModel.findByIdAndUpdate(docId,{slots_booked})
 
-        res.json({success:false,message:"Appointments Cancelled"})
+        res.json({success:true,message:"Appointments Cancelled"})
     } catch (error) {
         console.log(error);
         res.json({
