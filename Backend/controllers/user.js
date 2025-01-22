@@ -301,7 +301,7 @@ export const verifyRazorpay = async (req,res)=>{
         const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
 
         if(orderInfo.status === 'paid'){
-            await appointmentModel.findByIdAndUpdate(orderInfo.status,{payment:true})
+            await appointmentModel.findByIdAndUpdate(orderInfo.receipt,{payment:true})
             res.json({success:true,message:"Payment successfull"})
         }else{
             res.json({success:false,message:"Payment failed"})
