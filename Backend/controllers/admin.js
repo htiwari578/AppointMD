@@ -97,7 +97,7 @@ export const loginAdmin = async (req,res) =>  {
 
 // api to get all doctors list for admin panel
 
-export const allDoctors = async (rex ,res) => {
+export const allDoctors = async (req ,res) => {
     try {
         const doctors = await doctorModel.find({}).select('-password')
         res.json({success:true, doctors})
@@ -119,6 +119,36 @@ export const appointmentsAdmin = async (req,res)=>{
             success:true,
             appointments
         })
+    } catch (error) {
+        console.log(error);
+        res.json({
+            message:"Server error",
+            success:false
+        })
+    }
+}
+
+//api for appointment cancellation
+export const appointmentsCancel = async (req,res)=> {
+    try {
+        const { appointmentId} =  req.body
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        
+        await appointmentModel.findByIdAndUpdate(appointmentId, {cancelled:true})
+
+        //realeasing doctor slot 
+        const {docId, slotDate , slotTime} = appointmentData
+
+        const doctorData = await doctorModel.findById(docId)
+
+        let slots_booked = doctorData.slots_booked ;
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
+
+        await doctorModel.findByIdAndUpdate(docId,{slots_booked})
+
+        res.json({success:true,message:"Appointments Cancelled"})
     } catch (error) {
         console.log(error);
         res.json({
