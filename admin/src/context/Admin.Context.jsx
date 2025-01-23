@@ -12,6 +12,7 @@ const AdminContextProvider = (props) => {
 
     const [doctors , setDoctors] = useState([])
     const[appointments , setAppointments ] = useState([])
+    const[dashData , setDashData] = useState(false)
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -56,7 +57,7 @@ const AdminContextProvider = (props) => {
         }
     }
 
-    //cancel apppointments
+    //cancel apppointments from api
 
     const cancelAppointments = async (appointmentId) => {
         try {
@@ -72,13 +73,29 @@ const AdminContextProvider = (props) => {
            
         }
     }
+    //dashboard data from api
+
+    const getDashData = async()=>{
+        try {
+            const {data} = await axios.get(backendUrl + '/api/admin/dashboard',{headers:{aToken}})
+            if(data.success){
+                setDashData(data.dashData)
+             
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
 
     const value = {
         aToken , setAtoken,
         backendUrl,doctors,
         getAllDoctors,  changeAvailablity ,
         appointments,setAppointments, getAllAppointments,
-        cancelAppointments 
+        cancelAppointments , dashData, getDashData
     }
     return (
         <AdminContext.Provider value={value}>
