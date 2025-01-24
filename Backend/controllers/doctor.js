@@ -182,7 +182,7 @@ export const doctorProfile = async(req,res)=>{
     try {
         const {docId}= req.body
 
-        const profileData = await doctorModel.findById({docId}).select('-password')
+        const profileData = await doctorModel.findById(docId).select('-password')
 
         res.json({
             success:true,profileData
