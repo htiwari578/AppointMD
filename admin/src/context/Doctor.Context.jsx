@@ -18,8 +18,8 @@ const DoctorContextProvider = (props) => {
         try {
             const {data} = await axios.get(backendUrl + '/api/doctor/appointments',{headers:{docToken}})
             if(data.success){
-                setAppointments(data.appointments.reverse())
-                console.log(data.appointments.reverse());
+                setAppointments(data.appointments)
+              
             }else{
                 toast.error(data.message)
             }
@@ -28,10 +28,45 @@ const DoctorContextProvider = (props) => {
             toast.error(error.message)
         }
     }
+
+    //function to mark appointment completed
+
+    const completeAppointments = async (appointmentId)=>{
+        try {
+            const {data} = await axios.post(backendUrl+ '/api/doctor/complete-appointment',{appointmentId}, {headers:{docToken}})
+            if(data.success){
+                toast.success(data.message)
+                getAppointments()
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message)
+        }
+    }
+
+    // function to cancel appointments
+    const cancelAppointments = async (appointmentId)=>{
+        try {
+            const {data} = await axios.post(backendUrl+ '/api/doctor/cancel-appointment',{appointmentId}, {headers:{docToken}})
+            if(data.success){
+                toast.success(data.message)
+                getAppointments()
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         docToken , setDocToken,
         backendUrl , appointments, setAppointments,
-        getAppointments
+        getAppointments,completeAppointments,
+        cancelAppointments
     }
     return (
         <DoctorContext.Provider value={value}>
