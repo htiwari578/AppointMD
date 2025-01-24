@@ -32,7 +32,6 @@ const DoctorProfile = () => {
       }
   }
 
-
   useEffect(()=>{
       if(docToken){
         getProfileData()
