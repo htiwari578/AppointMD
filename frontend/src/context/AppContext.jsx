@@ -9,7 +9,7 @@ const AppContextProvider = (props) => {
 
     const currencySymbol = '$'
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = 'https://appointmd-backend.onrender.com'
     const [doctors, setDoctors] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token'):false)
     const [userData , setUserData] = useState(false)
