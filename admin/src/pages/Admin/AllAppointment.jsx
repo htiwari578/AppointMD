@@ -41,7 +41,8 @@ const AllAppointment = () => {
                 <img className="w-8 rounded-full bg-blue-300" src ={item.docData.image} alt ="" /> <p>{item.docData.name}</p>
               </div>
               <p>{currency}{item.amount}</p>
-              {item.cancelled
+              {
+              item.cancelled
               ? <p className="text-red-400 text-xs font-medium">Cancelled</p>
               : item.isCompleted  
               ? <p className="text-green-500 text-xs font-medium">Completed</p> 
